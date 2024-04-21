@@ -1,0 +1,173 @@
+basePath: /api/v1
+definitions:
+  handler.AuthRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  handler.TaskCreateRequest:
+    properties:
+      expression:
+        type: string
+    required:
+    - expression
+    type: object
+  repositories.AgentModel:
+    properties:
+      agent_id:
+        type: string
+      last_ping:
+        type: string
+      status:
+        type: string
+    type: object
+  response.SuccessResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Endpoints for expression calculator by Dmitriy Solopenkov
+  title: Expression Calculator
+  version: "1.0"
+paths:
+  /agent:
+    get:
+      consumes:
+      - application/json
+      operationId: agent-index
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/repositories.AgentModel'
+                  type: array
+              type: object
+      summary: Get all agents
+      tags:
+      - Agent
+  /login:
+    post:
+      consumes:
+      - application/json
+      operationId: auth-login
+      parameters:
+      - description: fields
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Authorization a user
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      operationId: auth-register
+      parameters:
+      - description: fields
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.AuthRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Register a new user
+      tags:
+      - Auth
+  /task:
+    get:
+      consumes:
+      - application/json
+      operationId: task-index
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/repositories.AgentModel'
+                  type: array
+              type: object
+      summary: Get all tasks
+      tags:
+      - Worker
+    post:
+      consumes:
+      - application/json
+      operationId: task-store
+      parameters:
+      - description: fields
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.TaskCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/repositories.AgentModel'
+              type: object
+      summary: Create task
+      tags:
+      - Worker
+  /task/:id:
+    get:
+      consumes:
+      - application/json
+      operationId: task-show
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.SuccessResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/repositories.AgentModel'
+              type: object
+      summary: Get task by id
+      tags:
+      - Worker
+swagger: "2.0"
