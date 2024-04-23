@@ -1,0 +1,19 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+  postgres:
+    image: "postgres:13-alpine"
+    environment:
+      POSTGRES_PASSWORD: test12345
+      POSTGRES_USER: calculator
+      POSTGRES_DB: calculator
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+networks:
+  default:
+    name: expression_calculator_network

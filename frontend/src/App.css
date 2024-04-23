@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.block-shadow {
+  box-shadow: 0px 10px 20px rgba(218,226,234,0.25);
+}
+
+body {
+  background-color: #f5f5f5;
+}
